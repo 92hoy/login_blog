@@ -23,14 +23,11 @@
             //alert("Please Sign Up")
             $("#signup").show();
             $("#login").hide();
-        });
 
-        $("#btn_reg").click(function(){
-            alert(444);
-            location.reload();
-            //alert("Regist Success")
-            $("#signup").hide();
-            $("#login").show();
+            $("btn_back").click(function(){
+                $("#signup").hide();
+                $("#login").show();
+            })
         });
 
     });
@@ -71,7 +68,12 @@ function btn_reg(){
             },
             success: function (data) {
                 if(data.return == 'success'){
-                    alert("Create!");
+                    alert("계정 생성 완료");
+                    location.reload()
+                }
+                else if(data.return == 'fail'){
+                    alert("ID 중복 / 생성 불가");
+                    location.reload()
                 }
             },
         });
@@ -79,6 +81,59 @@ function btn_reg(){
 
 
 }
+function btn_back(){
+    $('#login').show();
+    $('#signup').hide();
+
+    $('#sign_id').val('');
+    $('#sign_pw').val('');
+    $('#sign_pw2').val('');
+    $('#sign_name').val('');
+    $('#login_id').val('');
+    $('#login_pw').val('');
+
+
+}
+function btn_login() {
+
+        var login_id = $('#login_id').val();
+        var login_pw = $('#login_pw').val();
+        var lock = 0;
+
+        if (login_id == '') {
+            swal("입력 오류", "아이디 값을 입력하세요", "info");
+            lock = 1;
+        }
+        else if (login_pw == '') {
+            swal("입력 오류", "비밀번호 값을 입력하세요", "info");
+            lock = 1;
+        }
+
+            if (lock == 0) {
+                $.ajax({
+                    type: "GET",
+                    url: "/main/log_in",
+                    async: false,
+                    data: {
+                        login_id: login_id,
+                        login_pw: login_pw
+
+                    },
+                    success: function (data) {
+                        if (data.return == 'success') {
+//                            alert("login-ok");
+                            $(location).attr('href',"/main/Home");
+                        }
+                        else if (data.return == 'fail') {
+                            alert("login-fail");
+                            // reload (새로고침) 말고 input 데이터만 삭제하는 로직 작성
+                        }
+                    },
+                });
+            }
+
+    }
+
 </script>
 
 </head>
@@ -89,15 +144,15 @@ function btn_reg(){
 <div id="login">
 <h1> Login</h1>
 
-    <span class="input-group-text" id="login_id">ID  </span>
-  <input type="text" class="form-control"><br>
+    <span class="input-group-text" >ID  </span>
+  <input id="login_id" type="text" class="form-control"><br>
 
-    <span class="input-group-text" id="login_pw">PassWord  </span>
-  <input type="text" class="form-control"><br>
+    <span class="input-group-text" >PassWord  </span>
+  <input id="login_pw"type="password" class="form-control"><br>
 
 
-    <button type="button" class="btn btn-success">Login</button>
-    <button id="btn_signup"type="button" class="btn btn-info">Sign Up</button>
+    <button onclick ="btn_login()" id="btn_login"type="button" class="btn btn-success">Login</button>
+    <button id="btn_signup" type="button" class="btn btn-info">Sign Up</button>
 </div>
 <!--</div>-->
 
@@ -119,8 +174,12 @@ function btn_reg(){
   <input  id="sign_name" type="text" class="form-control"><br>
 
      <button onclick="btn_reg()" type="button" class="btn btn-info">Regist</button>
-    <!--,location.reload()-->
+
+     <button onclick="btn_back()" type="button" class="btn btn-warning">Back</button>
+
 </div>
+
+
 <!--</div>-->
 
 
