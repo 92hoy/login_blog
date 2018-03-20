@@ -26,6 +26,7 @@ def regist(request):
                 values('{id}','{password}','{name}')
             '''.format(id=sign_id,password=sign_pw,name=sign_name,)
             cur.execute(query)
+
             print query
 
-    return JsonResponse({'return':'success', 'sign_id':sign_id, 'sign_pw':sign_pw,'sign_name':sign_name})
+    return JsonResponse({'return':'success', 'id':sign_id, 'password':sign_pw,'name':sign_name})
