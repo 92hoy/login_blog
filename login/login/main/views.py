@@ -36,7 +36,7 @@ def regist(request):
     with connections['default'].cursor() as cur:
             query = '''
                 insert into login(id, password, name)
-                values('{id}','{password}','{name}')
+                values('{id}',MD5('{password}'),'{name}')
             '''.format(id=sign_id,password=sign_pw,name=sign_name,)
             cur.execute(query)
 
@@ -74,7 +74,7 @@ def log_in(request):
             query = '''
                 select id ,password, no
                 from login
-                where id = '{id}'and password ='{password}'
+                where id = '{id}'and password = MD5('{password}')
             '''.format(id=login_id,password=login_pw)
             print query
 

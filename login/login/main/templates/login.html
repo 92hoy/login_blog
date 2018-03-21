@@ -14,21 +14,22 @@
 
     <script>
     $(document).ready(function(){
-
         console.log("ready");
 
-        $("#signup").hide();
 
-        $("#btn_signup").click(function(){
-            //alert("Please Sign Up")
-            $("#signup").show();
-            $("#login").hide();
-
-            $("btn_back").click(function(){
-                $("#signup").hide();
-                $("#login").show();
-            })
+        $('#login').keydown(function (e) {
+          if (e.keyCode == 13) {
+            $('#btn_login').click();
+          }
         });
+
+        $('#signup').keydown(function (q) {
+          if (q.keyCode == 13) {
+            $('#btn_reg').click();
+          }
+        });
+
+        $("#signup").hide();
 
     });
 
@@ -73,12 +74,29 @@ function btn_reg(){
                 }
                 else if(data.return == 'fail'){
                     alert("ID 중복 / 생성 불가");
-                    location.reload()
+                    $("#sign_id").val("");
+                    $("#sign_pw").val("");
+                    $("#sign_pw2").val("");
+                    $("#sign_name").val("");
                 }
             },
         });
     }
 
+
+}
+
+function btn_signup(){
+
+    $('#login').hide();
+    $('#signup').show();
+
+    $('#sign_id').val('');
+    $('#sign_pw').val('');
+    $('#sign_pw2').val('');
+    $('#sign_name').val('');
+    $('#login_id').val('');
+    $('#login_pw').val('');
 
 }
 function btn_back(){
@@ -94,11 +112,13 @@ function btn_back(){
 
 
 }
+
 function btn_login() {
 
         var login_id = $('#login_id').val();
         var login_pw = $('#login_pw').val();
         var lock = 0;
+
 
         if (login_id == '') {
             swal("입력 오류", "아이디 값을 입력하세요", "info");
@@ -126,13 +146,14 @@ function btn_login() {
                         }
                         else if (data.return == 'fail') {
                             alert("login-fail");
-                            // reload (새로고침) 말고 input 데이터만 삭제하는 로직 작성
+                                $('#login_pw').val(""); //Login 실패시 value 값 초기화
                         }
                     },
                 });
             }
 
     }
+
 
 </script>
 
@@ -148,11 +169,11 @@ function btn_login() {
   <input id="login_id" type="text" class="form-control"><br>
 
     <span class="input-group-text" >PassWord  </span>
-  <input id="login_pw"type="password" class="form-control"><br>
+  <input name="test" id="login_pw"type="password" class="form-control"><br>
 
 
-    <button onclick ="btn_login()" id="btn_login"type="button" class="btn btn-success">Login</button>
-    <button id="btn_signup" type="button" class="btn btn-info">Sign Up</button>
+    <button onclick ="btn_login()" id="btn_login" type="button" class="btn btn-success">Login</button>
+    <button onclick ="btn_signup()" id="btn_signup" type="button" class="btn btn-info">Sign Up</button>
 </div>
 <!--</div>-->
 
@@ -173,13 +194,11 @@ function btn_login() {
      <span class="input-group-text" > Name  </span>
   <input  id="sign_name" type="text" class="form-control"><br>
 
-     <button onclick="btn_reg()" type="button" class="btn btn-info">Regist</button>
+     <button onclick="btn_reg()" id="btn_reg"type="button" class="btn btn-info">Regist</button>
 
      <button onclick="btn_back()" type="button" class="btn btn-warning">Back</button>
 
 </div>
-
-
 <!--</div>-->
 
 
